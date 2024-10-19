@@ -253,6 +253,8 @@ type Config struct {
 	// If unset or zero, default batch size of 100 is used.
 	// Make sure to not put a big number as the batch size to prevent a long-running script.
 	JanitorBatchSize int
+
+	WorkerName string
 }
 
 // GroupAggregator aggregates a group of tasks into one before the tasks are passed to the Handler.
@@ -527,6 +529,7 @@ func NewServerFromRedisClient(c redis.UniversalClient, cfg Config) *Server {
 		state:          srvState,
 		starting:       starting,
 		finished:       finished,
+		workerName:     cfg.WorkerName,
 	})
 	delayedTaskCheckInterval := cfg.DelayedTaskCheckInterval
 	if delayedTaskCheckInterval == 0 {
